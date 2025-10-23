@@ -4,7 +4,6 @@ const Map<Item, double> itemPrices = {
   Item.computer: 1000.0,
   Item.phone: 500.0,
   Item.tablet: 300.0,
-  
 };
 
 class Cart {
@@ -22,11 +21,9 @@ class Cart {
     }
     return total;
   }
-
 }
 
 void main() {
-
   Cart cart = Cart();
 
   cart.addItem(Item.computer, 1);

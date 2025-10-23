@@ -1,0 +1,38 @@
+[
+  {
+    "id": "8a18d1da-216a-4c83-b310-67da2f40be05",
+    "username": "raksa",
+    "scoreInPercentages": 0,
+    "scoreInPoints": 0,
+    "answers": [
+      {
+        "id": "6766bb79-3b96-49ee-908e-1c121b3fa1c8",
+        "questionId": "4a54aa0f-cd23-4324-87f6-fd05374c6870",
+        "answerChoice": "paris"
+      },
+      {
+        "id": "1b06b1e7-e98f-42d5-a912-0559deca8bfc",
+        "questionId": "c4daa9bc-a3fc-42d9-b097-48724a69a114",
+        "answerChoice": "1"
+      }
+    ]
+  },
+  {
+    "id": "899de502-267f-40c8-8803-c67238732a39",
+    "username": "ronan",
+    "scoreInPercentages": 0,
+    "scoreInPoints": 0,
+    "answers": [
+      {
+        "id": "69716431-7b2d-4cab-a6e9-d1d652f27dff",
+        "questionId": "4a54aa0f-cd23-4324-87f6-fd05374c6870",
+        "answerChoice": "the"
+      },
+      {
+        "id": "10373077-c99d-46fe-b923-db8f5f6f02ff",
+        "questionId": "c4daa9bc-a3fc-42d9-b097-48724a69a114",
+        "answerChoice": "best"
+      }
+    ]
+  }
+]
