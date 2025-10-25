@@ -1,4 +1,5 @@
 import 'package:my_first_project/domain/quiz.dart';
+import 'package:my_first_project/data/quiz_file_provider.dart';
 import 'package:test/test.dart';
 
 // AI HELPED GENRATE NAMES AND CONTENT
@@ -55,7 +56,8 @@ main() {
     expect(nonExistentQuestion, isNull);
   });
 
-  test('Testing JSON serialization and deserialization', () {
+  test('Testing JSON serialization and deserialization through repositories',
+      () {
     Question question1 = Question(
       title: 'Test question',
       choices: ['A', 'B', 'C'],
@@ -72,11 +74,16 @@ main() {
     Answer answer1 = Answer(questionId: question1.id, answerChoice: 'A');
     originalSession.addAnswer(answer1);
 
-    Map<String, dynamic> quizJson = originalQuiz.toJson();
-    Map<String, dynamic> sessionJson = originalSession.toJson();
+    // Test QuizRepository JSON methods
+    QuizRepository quizRepo = QuizRepository('test_quiz.json');
+    Map<String, dynamic> quizJson = quizRepo.quizToJson(originalQuiz);
+    Quiz deserializedQuiz = quizRepo.quizFromJson(quizJson);
 
-    Quiz deserializedQuiz = Quiz.fromJson(quizJson);
-    Session deserializedSession = Session.fromJson(sessionJson);
+    // Test SessionRepository JSON methods
+    SessionRepository sessionRepo = SessionRepository('test_sessions.json');
+    Map<String, dynamic> sessionJson =
+        sessionRepo.sessionToJson(originalSession);
+    Session deserializedSession = sessionRepo.sessionFromJson(sessionJson);
 
     expect(deserializedQuiz.questions.length, equals(1));
     expect(deserializedQuiz.questions[0].title, equals('Test question'));

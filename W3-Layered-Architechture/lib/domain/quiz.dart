@@ -78,23 +78,6 @@ class Quiz {
     required this.questions,
   }) : id = id ?? const Uuid().v4();
 
-  factory Quiz.fromJson(Map<String, dynamic> json) {
-    var questionsJson = json['questions'] as List;
-    var questions = questionsJson.map((q) => Question.fromJson(q)).toList();
-
-    return Quiz(
-      id: json['id'] as String,
-      questions: questions,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'questions': questions.map((q) => q.toJson()).toList(),
-    };
-  }
-
   Question? getQuestionById(String questionId) {
     try {
       return questions.firstWhere((q) => q.id == questionId);
@@ -117,28 +100,6 @@ class Session {
     required this.scoreInPercentages,
     required this.scoreInPoints,
   }) : id = id ?? const Uuid().v4();
-
-  factory Session.fromJson(Map<String, dynamic> json) {
-    var answersJson = json['answers'] as List? ?? [];
-    var answers = answersJson.map((a) => Answer.fromJson(a)).toList();
-
-    return Session(
-      id: json['id'] as String,
-      username: json['username'] as String,
-      scoreInPercentages: json['scoreInPercentages'] as int,
-      scoreInPoints: json['scoreInPoints'] as int,
-    )..answers = answers;
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'username': username,
-      'scoreInPercentages': scoreInPercentages,
-      'scoreInPoints': scoreInPoints,
-      'answers': answers.map((a) => a.toJson()).toList(),
-    };
-  }
 
   void addAnswer(Answer answer) {
     answers.add(answer);
