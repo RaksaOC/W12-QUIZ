@@ -1,7 +1,8 @@
 import 'package:sqlite3/sqlite3.dart';
 
-import 'databas e.dart';
+import 'database.dart';
 
+// AI assisted in generating boilerplate code and params detection.
 abstract class BaseRepository {
   BaseRepository(this.tableName);
 
@@ -64,11 +65,18 @@ abstract class BaseRepository {
     int? offset,
   }) {
     final buffer = StringBuffer('SELECT * FROM $tableName');
-    if (where != null && where.trim().isNotEmpty) buffer.write(' WHERE $where');
-    if (orderBy != null && orderBy.trim().isNotEmpty)
+    if (where != null && where.trim().isNotEmpty) {
+      buffer.write(' WHERE $where');
+    }
+    if (orderBy != null && orderBy.trim().isNotEmpty) {
       buffer.write(' ORDER BY $orderBy');
-    if (limit != null) buffer.write(' LIMIT $limit');
-    if (offset != null) buffer.write(' OFFSET $offset');
+    }
+    if (limit != null) {
+      buffer.write(' LIMIT $limit');
+    }
+    if (offset != null) {
+      buffer.write(' OFFSET $offset');
+    }
     final stmt = _db.prepare(buffer.toString());
     try {
       final result = stmt.select(params);

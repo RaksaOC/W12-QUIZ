@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart';
 
+// AI assited in generating this database connection
 class DatabaseProvider {
   DatabaseProvider._internal();
 
