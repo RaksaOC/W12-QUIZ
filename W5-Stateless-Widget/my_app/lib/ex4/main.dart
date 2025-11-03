@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Weather App',
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             'Weather App',

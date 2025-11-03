@@ -82,36 +82,41 @@ class WeatherCard extends StatelessWidget {
     return PhysicalModel(
       color: Colors.transparent,
       elevation: 10,
+      clipBehavior: Clip.antiAlias,
       borderRadius: BorderRadius.circular(10),
       shadowColor: Colors.black,
-      child: Container(
-        margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: type.color,
-          gradient: type.gradient,
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-        ),
-        child: Stack(
-          children: [
-            WeatherStatistics(
-              type: type,
-              city: city,
-              min: min,
-              max: max,
-              avg: avg,
+          child: Container(
+            decoration: BoxDecoration(
+              color: type.color,
+              gradient: type.gradient,
             ),
-            AverageTemperature(type: type, avg: avg),
-          ],
+            child: Stack(
+              clipBehavior: Clip.antiAlias,
+              children: [
+                DecorativeElement(type: type),
+                WeatherStatistics(
+                  type: type,
+                  city: city,
+                  min: min,
+                  max: max,
+                  avg: avg,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-class AverageTemperature extends StatelessWidget {
+class DecorativeElement extends StatelessWidget {
   final WeatherType type;
-  final double avg;
-  const AverageTemperature({super.key, required this.type, required this.avg});
+  const DecorativeElement({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -127,18 +132,6 @@ class AverageTemperature extends StatelessWidget {
             ),
             width: 150,
             height: 150,
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 50, left: 30),
-            alignment: Alignment.center,
-            child: Text(
-              avg.toString() + " °C",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
           ),
         ],
       ),
@@ -166,11 +159,11 @@ class WeatherStatistics extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(10),
       child: Row(
-        spacing: 10,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        spacing: 10,
         children: [
           Row(
-            spacing: 20,
+            spacing: 10,
             children: [
               Center(
                 child: Container(
@@ -194,7 +187,7 @@ class WeatherStatistics extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Min: " + min.toString() + " °C",
+                    "Min: ${min.toString()} °C",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -202,7 +195,7 @@ class WeatherStatistics extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Max: " + max.toString() + " °C",
+                    "Max: ${max.toString()} °C",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -212,6 +205,17 @@ class WeatherStatistics extends StatelessWidget {
                 ],
               ),
             ],
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Text(
+              "${avg.toString()} °C",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
