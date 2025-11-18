@@ -66,6 +66,12 @@ flutter:
     - assets/images/sunny.png
     - assets/images/sunnyCloudy.png
     - assets/images/veryCloudy.png
+    - assets/images/dices/dice-1.png
+    - assets/images/dices/dice-2.png
+    - assets/images/dices/dice-3.png
+    - assets/images/dices/dice-4.png
+    - assets/images/dices/dice-5.png
+    - assets/images/dices/dice-6.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
