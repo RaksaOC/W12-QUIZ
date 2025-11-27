@@ -33,25 +33,84 @@ class _TempuratureScreenState extends State<TempuratureScreen> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Icon(Icons.thermostat, size: 200, color: Colors.white),
+            Icon(Icons.thermostat, size: 120, color: Colors.white),
+            const SizedBox(height: 16),
             Text(
               "Converter",
-              style: TextStyle(color: Colors.white, fontSize: 48),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Tempurature in degrees",
-                labelStyle: TextStyle(color: Colors.white, fontSize: 12),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 42,
+                fontWeight: FontWeight.w600,
               ),
+            ),
+            const SizedBox(height: 36),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: "Temperature in degrees",
+                labelStyle: TextStyle(color: Colors.black54, fontSize: 14),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 18,
+                  horizontal: 16,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(color: Colors.white, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                  borderSide: BorderSide(color: Colors.white, width: 2),
+                ),
+              ),
+              style: TextStyle(color: Colors.black87, fontSize: 16),
               onChanged: (value) => setState(() {
-                cTemp = double.parse(value);
+                cTemp = double.tryParse(value) ?? 0;
               }),
             ),
-            Text(
-              "Tempurature in fahrenheit: $fTemp",
-              style: TextStyle(color: Colors.white, fontSize: 12),
+            const SizedBox(height: 24),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 18),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white, width: 1.5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Temperature in Fahrenheit",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 12,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    fTemp.toStringAsFixed(1),
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(height: 24),
             TextButton(
               onPressed: handleCalculate,
               style: TextButton.styleFrom(
