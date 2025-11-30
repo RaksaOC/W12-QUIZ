@@ -2,7 +2,7 @@ import 'package:quiz_app/data/repository/repo_base.dart';
 import 'package:quiz_app/model/quiz.dart';
 
 class QuizRepository extends RepositoryBase<Quiz> {
-  QuizRepository() : super('quiz.json');
+  QuizRepository() : super('quiz.json', assetPath: 'lib/data/db/quiz.json');
 
   @override
   Quiz fromJson(Map<String, dynamic> json) {

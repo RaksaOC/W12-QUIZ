@@ -2,7 +2,7 @@ import 'package:quiz_app/data/repository/repo_base.dart';
 import 'package:quiz_app/model/quiz.dart';
 
 class SubmissionRepository extends RepositoryBase<Submission> {
-  SubmissionRepository() : super('submission.json');
+  SubmissionRepository() : super('submission.json', assetPath: 'lib/data/db/submission.json');
 
   @override
   Submission fromJson(Map<String, dynamic> json) {

@@ -2,7 +2,7 @@ import 'package:quiz_app/data/repository/repo_base.dart';
 import 'package:quiz_app/model/quiz.dart';
 
 class UsersRepository extends RepositoryBase<User> {
-  UsersRepository() : super('users.json');
+  UsersRepository() : super('users.json', assetPath: 'lib/data/db/users.json');
 
   @override
   User fromJson(Map<String, dynamic> json) {

@@ -17,6 +17,8 @@ class QuizApp extends StatefulWidget {
   final SubmissionService submissionService = SubmissionService();
   final SessionService sessionService = SessionService();
 
+  bool isLogInError = false;
+
   QuizApp({super.key, required this.quizzes, required this.currentPage});
 
   @override
@@ -25,7 +27,13 @@ class QuizApp extends StatefulWidget {
 
 class _QuizAppState extends State<QuizApp> {
   void handleAppLogIn(String email, String password) {
-    widget.sessionService.loginUser(email, password);
+    final User? user = widget.sessionService.loginUser(email, password);
+    if (user == null) {
+      setState(() {
+        widget.isLogInError = true;
+      });
+      return;
+    }
     if (widget.sessionService.isUserLoggedIn) {
       setState(() {
         widget.currentPage = QuizPage.welcome;
@@ -77,6 +85,7 @@ class _QuizAppState extends State<QuizApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -99,6 +108,21 @@ class _QuizAppState extends State<QuizApp> {
         ),
         body: Center(
           child: () {
+            if (widget.isLogInError) {
+              return Column(
+                children: [
+                  const Text("Invalid email or password"),
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        widget.isLogInError = false;
+                      });
+                    },
+                    child: const Text("Try again"),
+                  ),
+                ],
+              );
+            }
             switch (widget.currentPage) {
               case QuizPage.welcome:
                 return WelcomeScreen(
