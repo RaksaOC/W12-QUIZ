@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/model/quiz.dart';
+import 'package:quiz_app/ui/widgets/back_button.dart';
+import 'package:quiz_app/ui/widgets/question_card.dart';
+import 'package:quiz_app/ui/widgets/question_navigator.dart';
 
 enum MoveDirection { previous, next }
 
@@ -7,6 +10,7 @@ class QuestionScreen extends StatefulWidget {
   final List<Question> questions;
   List<QuestionHistory> questionHistories = [];
   int currentQuestionIndex = 0;
+  Map<int, int> selectedChoiceIds = {};
   Function(List<QuestionHistory>) onSubmit;
   final VoidCallback onBack;
   QuestionScreen({
@@ -21,14 +25,29 @@ class QuestionScreen extends StatefulWidget {
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
-  void addQuestionHistory(int questionId, int selectedChoiceId) {
+  void handleChoiceClick(int questionId, int selectedChoiceId) {
     setState(() {
-      widget.questionHistories.add(
-        QuestionHistory(
-          questionId: questionId,
-          selectedChoiceId: selectedChoiceId,
-        ),
-      );
+      widget.selectedChoiceIds[questionId] = selectedChoiceId;
+      if (!widget.questionHistories.any(
+        (history) => history.questionId == questionId,
+      )) {
+        widget.questionHistories.add(
+          QuestionHistory(
+            questionId: questionId,
+            selectedChoiceId: selectedChoiceId,
+          ),
+        );
+      } else {
+        widget.questionHistories.removeWhere(
+          (history) => history.questionId == questionId,
+        );
+        widget.questionHistories.add(
+          QuestionHistory(
+            questionId: questionId,
+            selectedChoiceId: selectedChoiceId,
+          ),
+        );
+      }
     });
   }
 
@@ -52,44 +71,26 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 20,
       children: [
-        TextButton(onPressed: widget.onBack, child: Icon(Icons.arrow_back)),
-        Text('Question ${widget.questions[widget.currentQuestionIndex].title}'),
-        ...widget.questions[widget.currentQuestionIndex].choices.map(
-          (choice) => ElevatedButton(
-            onPressed: () {
-              setState(() {
-                addQuestionHistory(
-                  widget.questions[widget.currentQuestionIndex].id,
-                  choice.id,
-                );
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: choice.isCorrect ? Colors.green : Colors.red,
-              foregroundColor: choice.isCorrect ? Colors.white : Colors.white,
-              textStyle: const TextStyle(fontSize: 16),
-            ),
-            child: Text(choice.title),
-          ),
+        AppBackButton(onPressed: widget.onBack),
+
+        QuestionCard(
+          question: widget.questions[widget.currentQuestionIndex],
+          selectedChoiceId:
+              widget.selectedChoiceIds.containsKey(
+                widget.questions[widget.currentQuestionIndex].id,
+              )
+              ? widget.selectedChoiceIds[widget
+                    .questions[widget.currentQuestionIndex]
+                    .id]
+              : null,
+          onChoiceClicked: handleChoiceClick,
         ),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                handleMoveQuestion(MoveDirection.previous);
-              },
-              child: Text('<'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                handleMoveQuestion(MoveDirection.next);
-              },
-              child: widget.currentQuestionIndex < widget.questions.length - 1
-                  ? Text('>')
-                  : Text('Submit'),
-            ),
-          ],
+        QuestionNavigator(
+          quizQuestionLength: widget.questions.length,
+          currentQuestionIndex: widget.currentQuestionIndex,
+          onMoveQuestion: handleMoveQuestion,
         ),
       ],
     );

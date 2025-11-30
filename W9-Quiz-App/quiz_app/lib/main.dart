@@ -14,5 +14,5 @@ void main() async {
   final quizzes = quizRepository.loadAll();
 
   // 2 - Display the quiz
-  runApp(QuizApp(quizzes: quizzes, currentPage: QuizPage.auth));
+  runApp(QuizApp(quizzes: quizzes, currentPage: Pages.auth));
 }

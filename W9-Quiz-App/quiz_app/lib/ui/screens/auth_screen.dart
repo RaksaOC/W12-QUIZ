@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/ui/widgets/app_button.dart';
+import 'package:quiz_app/ui/widgets/app_input.dart';
 
 class AuthScreen extends StatelessWidget {
   AuthScreen({super.key, required this.onLogIn});
@@ -9,20 +11,11 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 10,
       children: [
-        Text("Log In"),
-        TextField(
-          decoration: InputDecoration(labelText: "Email"),
-          onChanged: (value) => email = value,
-        ),
-        TextField(
-          decoration: InputDecoration(labelText: "Password"),
-          onChanged: (value) => password = value,
-        ),
-        ElevatedButton(
-          onPressed: () => onLogIn(email, password),
-          child: Text("Log In"),
-        ),
+        AppInput(label: "Email", onChanged: (value) => email = value),
+        AppInput(label: "Password", onChanged: (value) => password = value),
+        AppButton("Log In", onPressed: () => onLogIn(email, password), icon: Icons.login),
       ],
     );
   }

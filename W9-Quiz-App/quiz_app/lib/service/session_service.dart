@@ -13,8 +13,13 @@ class SessionService {
   SessionService._internal();
 
   User? _currentUser;
+  Quiz? _currentQuiz;
 
   User? get currentUser => _currentUser;
+  Quiz? get currentQuiz => _currentQuiz;
+  set currentQuiz(Quiz? quiz) {
+    _currentQuiz = quiz;
+  }
 
   bool get isUserLoggedIn => _currentUser != null;
 

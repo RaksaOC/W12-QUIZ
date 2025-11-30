@@ -4,16 +4,30 @@ import 'package:quiz_app/service/session_service.dart';
 import 'package:quiz_app/service/submission_service.dart';
 import 'package:quiz_app/ui/screens/auth_screen.dart';
 import 'package:quiz_app/ui/screens/question_screen.dart';
+import 'package:quiz_app/ui/screens/quiz_screen.dart';
 import 'package:quiz_app/ui/screens/result_screen.dart';
 import 'package:quiz_app/ui/screens/history_screen.dart';
 import 'package:quiz_app/ui/screens/welcome_screen.dart';
+import 'package:quiz_app/ui/widgets/app_button.dart';
 
-enum QuizPage { welcome, quiz, result, history, auth }
+enum Pages {
+  welcome('welcome', 'Welcome', Icons.home, Colors.blue),
+  quiz('quiz', 'Quiz', Icons.quiz, Colors.green),
+  question('question', 'Question', Icons.question_answer, Colors.yellow),
+  result('result', 'Result', Icons.check_circle, Colors.green),
+  history('history', 'History', Icons.history, Colors.blue),
+  auth('auth', 'Log Out', Icons.lock, Colors.red);
+
+  final String id;
+  final String title;
+  final IconData icon;
+  final Color backgroundColor;
+  const Pages(this.id, this.title, this.icon, this.backgroundColor);
+}
 
 class QuizApp extends StatefulWidget {
   final List<Quiz> quizzes;
-  QuizPage currentPage;
-  int currentQuizId = 0;
+  Pages currentPage;
   final SubmissionService submissionService = SubmissionService();
   final SessionService sessionService = SessionService();
 
@@ -36,49 +50,41 @@ class _QuizAppState extends State<QuizApp> {
     }
     if (widget.sessionService.isUserLoggedIn) {
       setState(() {
-        widget.currentPage = QuizPage.welcome;
+        widget.currentPage = Pages.welcome;
       });
     } else {
       setState(() {
-        widget.currentPage = QuizPage.auth;
+        widget.currentPage = Pages.auth;
       });
     }
   }
 
-  void handleNavigateToQuestion(int id) {
+  void handleNavigateToPage(String id) {
     setState(() {
-      widget.currentPage = QuizPage.quiz;
-      widget.currentQuizId = id;
+      widget.currentPage = Pages.values.firstWhere((page) => page.id == id);
+    });
+  }
+
+  void handleNavigateToPageWithQuizId(int quizId) {
+    setState(() {
+      widget.currentPage = Pages.question;
+      widget.sessionService.currentQuiz = widget.quizzes.firstWhere(
+        (quiz) => quiz.id == quizId,
+      );
     });
   }
 
   void handleOnSubmit(List<QuestionHistory> questionHistories) {
-    int score = 0;
-    for (QuestionHistory questionHistory in questionHistories) {
-      if (widget
-          .quizzes[widget.currentQuizId]
-          .questions[questionHistory.questionId]
-          .choices[questionHistory.selectedChoiceId]
-          .isCorrect) {
-        score += 1;
-      }
-    }
-    Submission submission = Submission(
-      // will change to optional with proper dto
-      quizId: widget.currentQuizId,
-      questionHistories: questionHistories,
-      score: score,
-    );
-    widget.submissionService.saveSubmission(submission);
+    widget.submissionService.saveSubmission(questionHistories);
     setState(() {
-      widget.currentPage = QuizPage.result;
+      widget.currentPage = Pages.result;
     });
   }
 
-  void handleBack() {
+  void handleBack(Pages page) {
     setState(() {
-      widget.currentPage = QuizPage.welcome;
-      widget.currentQuizId = 0;
+      widget.currentPage = page;
+      widget.sessionService.currentQuiz = null;
     });
   }
 
@@ -90,63 +96,73 @@ class _QuizAppState extends State<QuizApp> {
         appBar: AppBar(
           title: Text(
             widget.sessionService.isUserLoggedIn
-                ? "Quiz App"
+                ? "AMAZON QUIZZES"
                 : "Authentication",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.deepPurple,
+            ),
           ),
+          centerTitle: false,
           actions: [
             if (widget.sessionService.isUserLoggedIn)
               IconButton(
                 onPressed: () => {
                   widget.sessionService.logout(),
                   setState(() {
-                    widget.currentPage = QuizPage.auth;
+                    widget.currentPage = Pages.auth;
                   }),
                 },
                 icon: Icon(Icons.logout),
               ),
           ],
         ),
-        body: Center(
+        body: Container(
+          padding: EdgeInsets.all(10),
           child: () {
             if (widget.isLogInError) {
               return Column(
                 children: [
                   const Text("Invalid email or password"),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        widget.isLogInError = false;
-                      });
-                    },
-                    child: const Text("Try again"),
+                  AppButton(
+                    "Try Again",
+                    onPressed: () => setState(() {
+                      widget.isLogInError = false;
+                    }),
                   ),
                 ],
               );
             }
             switch (widget.currentPage) {
-              case QuizPage.welcome:
+              case Pages.welcome:
                 return WelcomeScreen(
-                  quizzes: widget.quizzes,
-                  onPressed: handleNavigateToQuestion,
+                  pages: [Pages.quiz, Pages.history, Pages.auth],
+                  onItemSelected: handleNavigateToPage,
                 );
-              case QuizPage.quiz:
+              case Pages.quiz:
+                return QuizScreen(
+                  quizzes: widget.quizzes,
+                  onPressed: (quizId) => handleNavigateToPageWithQuizId(quizId),
+                  onBack: () => handleBack(Pages.welcome),
+                );
+              case Pages.question:
                 return QuestionScreen(
-                  questions: widget.quizzes[widget.currentQuizId].questions,
+                  questions: widget.sessionService.currentQuiz!.questions,
                   onSubmit: (questionHistories) =>
                       handleOnSubmit(questionHistories),
-                  onBack: handleBack,
+                  onBack: () => handleBack(Pages.quiz),
                 );
-              case QuizPage.result:
+              case Pages.result:
                 return ResultScreen(
                   result: widget.submissionService.getSubmissions().last,
-                  onBack: handleBack,
+                  onBack: () => handleBack(Pages.welcome),
                 );
-              case QuizPage.history:
+              case Pages.history:
                 return HistoryScreen(
                   submissions: widget.submissionService.getSubmissions(),
-                  onBack: handleBack,
+                  onBack: () => handleBack(Pages.welcome),
                 );
-              case QuizPage.auth:
+              case Pages.auth:
                 return AuthScreen(onLogIn: handleAppLogIn);
               default:
                 return const SizedBox();
