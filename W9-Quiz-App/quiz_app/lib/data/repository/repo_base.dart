@@ -17,10 +17,7 @@ abstract class RepositoryBase<T> {
   bool _initialized = false;
   static String? _documentsDirectory;
 
-  RepositoryBase(this.dbPath, {this.assetPath}) {
-    initialize();
-    initializeAsset();
-  }
+  RepositoryBase(this.dbPath, {this.assetPath});
 
   /// Initialize documents directory (call this once in main before creating repositories)
   static Future<void> initializeDocumentsDirectory() async {
@@ -83,6 +80,15 @@ abstract class RepositoryBase<T> {
     // Only copy if file doesn't exist or is empty
     if (!file.existsSync() || file.readAsStringSync().trim() == '[]') {
       await copyAssetToFile(assetPath!, resolvedPath);
+    }
+  }
+
+  static Future<void> clearFile(String dbPath) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File(path.join(dir.path, path.basename(dbPath)));
+
+    if (await file.exists()) {
+      await file.delete();
     }
   }
 

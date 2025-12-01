@@ -4,10 +4,17 @@ import 'package:flutter/material.dart';
 
 void main() {
   List<Expense> registeredExpenses = expenses;
+  bool isBottomSheetOpen = false;
+  void handleOnPress() {}
   runApp(
     MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text("EXPENSES")),
+        appBar: AppBar(
+          title: Text("EXPENSES"),
+          actions: [
+            TextButton(child: (Icon(Icons.add)), onPressed: handleOnPress),
+          ],
+        ),
         backgroundColor: Colors.blue,
         body: Column(
           children: registeredExpenses

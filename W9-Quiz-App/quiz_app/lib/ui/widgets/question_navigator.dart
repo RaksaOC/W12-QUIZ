@@ -20,7 +20,8 @@ class QuestionNavigator extends StatelessWidget {
       spacing: 20,
       children: [
         AppButton(
-          currentQuestionIndex > 0 ? '<' : '',
+          icon: Icons.arrow_back,
+          'Back',
           onPressed: () {
             if (currentQuestionIndex > 0) {
               onMoveQuestion(MoveDirection.previous);
@@ -28,7 +29,8 @@ class QuestionNavigator extends StatelessWidget {
           },
         ),
         AppButton(
-          currentQuestionIndex < quizQuestionLength - 1 ? '>' : 'Submit',
+          icon: Icons.arrow_forward,
+          currentQuestionIndex < quizQuestionLength - 1 ? 'Next' : 'Submit',
           onPressed: () {
             onMoveQuestion(MoveDirection.next);
           },

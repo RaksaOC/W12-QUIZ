@@ -13,12 +13,12 @@ class SubmissionService {
     }
     int score = 0;
     for (QuestionHistory questionHistory in questionHistories) {
-      if (session
-          .currentQuiz!
-          .questions[questionHistory.questionId]
-          .choices[questionHistory.selectedChoiceId]
+      if (session.currentQuiz!.questions
+          .firstWhere((question) => question.id == questionHistory.questionId)
+          .choices
+          .firstWhere((choice) => choice.id == questionHistory.selectedChoiceId)
           .isCorrect) {
-        score += 1;
+        score++;
       }
     }
     _submissionRepository.create(

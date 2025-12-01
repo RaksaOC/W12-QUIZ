@@ -1,14 +1,2 @@
-[
-  {
-    "id": 0,
-    "userId": 0,
-    "quizId": 0,
-    "questionHistories": [
-      { "questionId": 0, "selectedChoiceId": 0 },
-      { "questionId": 1, "selectedChoiceId": 0 },
-      { "questionId": 2, "selectedChoiceId": 1 }
-    ],
-    "score": 2
-  }
-]
+[]
 

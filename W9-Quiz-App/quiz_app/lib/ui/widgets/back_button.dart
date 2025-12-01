@@ -8,10 +8,26 @@ class AppBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TextButton(onPressed: onPressed, child: Icon(Icons.arrow_back)),
-        Text(
-          "Back",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.grey.shade300,
+            foregroundColor: Colors.white,
+            textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          onPressed: onPressed,
+          child: Row(
+            children: [
+              Icon(Icons.arrow_back, color: Colors.deepPurple),
+              Text(
+                "Back",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

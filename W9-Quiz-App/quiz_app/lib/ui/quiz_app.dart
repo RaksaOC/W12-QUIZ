@@ -40,6 +40,25 @@ class QuizApp extends StatefulWidget {
 }
 
 class _QuizAppState extends State<QuizApp> {
+  String getPageTitle(Pages page) {
+    switch (page) {
+      case Pages.welcome:
+        return "AMAZON QUIZZES";
+      case Pages.quiz:
+        return "AMAZON QUIZZES";
+      case Pages.question:
+        return widget.sessionService.currentQuiz!.title;
+      case Pages.result:
+        return widget.sessionService.currentQuiz!.title + " Result";
+      case Pages.history:
+        return "History";
+      case Pages.auth:
+        return "Authentication";
+      default:
+        return "";
+    }
+  }
+
   void handleAppLogIn(String email, String password) {
     final User? user = widget.sessionService.loginUser(email, password);
     if (user == null) {
@@ -95,9 +114,7 @@ class _QuizAppState extends State<QuizApp> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            widget.sessionService.isUserLoggedIn
-                ? "AMAZON QUIZZES"
-                : "Authentication",
+            getPageTitle(widget.currentPage),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.deepPurple,
