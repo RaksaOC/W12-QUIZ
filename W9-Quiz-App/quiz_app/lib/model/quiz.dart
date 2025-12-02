@@ -1,3 +1,14 @@
+// before refactor this file contains all models
+// to prevent all files import changes use this file as all models exporter with the quiz definition inside
+
+export 'choices.dart';
+export 'question.dart';
+export 'question_history.dart';
+export 'submission.dart';
+export 'user.dart';
+
+import 'question.dart';
+
 class Quiz {
   final int id;
   final String title;
@@ -9,58 +20,5 @@ class Quiz {
     required this.questions,
     required this.title,
     required this.timer,
-  });
-}
-
-class Question {
-  final int id;
-  final String title;
-  final List<Choices> choices;
-
-  Question({required this.id, required this.title, required this.choices});
-}
-
-class QuestionHistory {
-  final int questionId;
-  final int selectedChoiceId;
-
-  QuestionHistory({required this.questionId, required this.selectedChoiceId});
-}
-
-class Choices {
-  final int id;
-  final String title;
-  final bool isCorrect;
-
-  Choices({required this.id, required this.title, required this.isCorrect});
-}
-
-class Submission {
-  int? id;
-  int? userId;
-  final int quizId;
-  final List<QuestionHistory> questionHistories;
-  final int score;
-
-  Submission({
-    this.id,
-    this.userId,
-    required this.quizId,
-    required this.questionHistories,
-    required this.score,
-  });
-}
-
-class User {
-  final int id;
-  final String name;
-  final String email;
-  final String password;
-
-  User({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.password,
   });
 }
