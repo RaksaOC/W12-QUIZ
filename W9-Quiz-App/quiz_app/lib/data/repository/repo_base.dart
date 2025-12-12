@@ -26,6 +26,7 @@ abstract class RepositoryBase<T> {
       _documentsDirectory = directory.path;
     }
   }
+  
 
   /// Resolve the actual file path (use documents directory on mobile)
   String _resolvePath(String filePath) {

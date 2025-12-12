@@ -11,9 +11,9 @@ void main() async {
   // Initialize documents directory for mobile platforms
   await RepositoryBase.initializeDocumentsDirectory();
 
-  await RepositoryBase.clearFile('submission.json');
-  await RepositoryBase.clearFile('users.json');
-  await RepositoryBase.clearFile('quiz.json');
+  // await RepositoryBase.clearFile('submission.json');
+  // await RepositoryBase.clearFile('users.json');
+  // await RepositoryBase.clearFile('quiz.json');
 
   // Initialize asset data (copy from bundle to documents directory)
   final usersRepository = UsersRepository();
