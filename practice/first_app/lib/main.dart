@@ -1,27 +1,28 @@
-import 'package:first_app/data/data.dart';
-import 'package:first_app/widgets/expense_item.dart';
 import 'package:flutter/material.dart';
+import 'ui/grocery/grocery_list.dart';
 
 void main() {
-  List<Expense> registeredExpenses = expenses;
-  bool isBottomSheetOpen = false;
-  void handleOnPress() {}
-  runApp(
-    MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("EXPENSES"),
-          actions: [
-            TextButton(child: (Icon(Icons.add)), onPressed: handleOnPress),
-          ],
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Groceries',
+      theme: ThemeData.dark().copyWith(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 147, 229, 250),
+          brightness: Brightness.dark,
+          surface: const Color.fromARGB(255, 42, 51, 59),
         ),
-        backgroundColor: Colors.blue,
-        body: Column(
-          children: registeredExpenses
-              .map((expense) => ExpenseItem(expense: expense))
-              .toList(),
-        ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60),
       ),
-    ),
-  );
+      home: const GroceryList(),
+    );
+  }
 }
