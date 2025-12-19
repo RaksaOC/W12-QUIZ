@@ -36,10 +36,7 @@ class _GroceryListState extends State<GroceryList> {
       appBar: AppBar(
         title: const Text('Your Groceries'),
         actions: [
-          IconButton(
-            onPressed: () => {onCreate()},
-            icon: const Icon(Icons.add),
-          ),
+          IconButton(onPressed: () => onCreate, icon: const Icon(Icons.add)),
         ],
       ),
       body: content,
@@ -69,7 +66,11 @@ class GroceryItem extends StatelessWidget {
           ),
         ],
       ),
-      trailing: Text(grocery.quantity.toString()),
+      trailing: Text(
+        grocery.quantity > 1
+            ? {grocery.quantity}.toString() + "Items"
+            : {grocery.quantity}.toString() + "Item",
+      ),
     );
   }
 }
