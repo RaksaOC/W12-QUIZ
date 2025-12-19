@@ -68,8 +68,8 @@ class GroceryItem extends StatelessWidget {
       ),
       trailing: Text(
         grocery.quantity > 1
-            ? {grocery.quantity}.toString() + "Items"
-            : {grocery.quantity}.toString() + "Item",
+            ? grocery.quantity.toString() + " Items"
+            : grocery.quantity.toString() + " Item",
       ),
     );
   }
